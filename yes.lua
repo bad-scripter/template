@@ -31,6 +31,124 @@ function ok(part, pathh, ye)
     end)
 end
 
+
+local canatk = true 
+local canab1 = true 
+local canab2 = true 
+local cancrit = true 
+
+local atktimer = 0 
+local ab1timer = 0 
+local ab2timer = 0 
+local crittimer = 0 
+
+local function roundDecimals(num, places)
+    places = math.pow(10, places or 0)
+    num = num * places
+
+    if num >= 0 then
+        num = math.floor(num + 0.5)
+    else
+        num = math.ceil(num - 0.5)
+    end
+
+    return num / places
+end
+
+
+
+local function cooling(move, timer)
+    spawn(function()
+        local gui = game.Players.LocalPlayer.PlayerGui.ClassGui.MainHUD.Abilites
+        
+            local truegui 
+    
+        move = string.lower(move)
+        
+        if move == 'atk' then 
+            if atktimer > 0 then 
+                atktimer = timer 
+                return 
+            end
+            atktimer = timer 
+            truegui = gui.Attack
+            canatk = false
+            
+            truegui.Icon.ImageTransparency = .5
+            repeat 
+                task.wait(.1)
+                truegui.CooldownDisplay.Text = roundDecimals(atktimer, 1)
+                atktimer = atktimer - .1
+            until atktimer <= 0 
+            truegui.CooldownDisplay.Text = ""
+            canatk = true
+            atktimer = 0 
+            truegui.Icon.ImageTransparency = 0 
+            
+        elseif move == 'ab1' then 
+            if ab1timer > 0 then 
+                ab1timer = timer 
+                return 
+            end
+            ab1timer = timer 
+            canab1 = false
+            truegui = gui.Ability1
+            
+            truegui.Icon.ImageTransparency = .5
+            repeat 
+                task.wait(.1)
+                truegui.CooldownDisplay.Text = roundDecimals(ab1timer, 1)
+                ab1timer = ab1timer - .1
+            until ab1timer <= 0 
+            truegui.CooldownDisplay.Text = ""
+            canab1 = true
+            ab1timer = 0 
+            truegui.Icon.ImageTransparency = 0 
+            
+        elseif move == 'ab2' then 
+            if ab2timer > 0 then 
+                ab2timer = timer 
+                return 
+            end
+            ab2timer = timer 
+            canab2 = false 
+            truegui = gui.Ability2
+            
+            truegui.Icon.ImageTransparency = .5
+            repeat 
+                task.wait(.1)
+                truegui.CooldownDisplay.Text = roundDecimals(ab2timer, 1)
+                ab2timer = ab2timer - .1
+            until ab2timer <= 0 
+            truegui.CooldownDisplay.Text = ""
+            canab2 = true
+            ab2timer = 0 
+            truegui.Icon.ImageTransparency = 0 
+            
+        elseif move == 'crit' then
+            if crittimer > 0 then 
+                crittimer = timer 
+                return 
+            end
+            crittimer = timer 
+            cancrit = false 
+            truegui = gui.Critical 
+            
+            truegui.Icon.ImageTransparency = .5
+            repeat 
+                task.wait(.1)
+                truegui.CooldownDisplay.Text = roundDecimals(crittimer, 1)
+                crittimer = crittimer - .1
+            until crittimer <= 0 
+            truegui.CooldownDisplay.Text = ""
+            cancrit = true
+            crittimer = 0 
+            truegui.Icon.ImageTransparency = 0 
+        end
+    end)
+end
+
+
 module.GetClosest = function()
     local LocalPlayer = plr
     local Character = char
@@ -96,7 +214,7 @@ module.GetClosest = function()
     return Target.HumanoidRootPart
 end
 
-module.CreateProjectile = function()
+module.CreateProjectile = function(projpath, cf, tobe, dam, col)
     spawn(
         function()
             local l__Remotes__13 = game.ReplicatedStorage.Remotes
@@ -110,10 +228,18 @@ module.CreateProjectile = function()
             v43.CFrame = v42
             v43.Color = col or l__LocalPlayer__2.CharacterColors.WeaponColor.Value
             v43.Speed.Value = v43.Speed.Value
-            if v43:FindFirstChild "Damage" then
-                v43.Damage.Value = dam or v43.Damage.Value
-            end
+            v43.Damage.Value = dam or v43.Damage.Value
             local t = v43.Transparency
+            for _, v in pairs(v43:GetChildren()) do
+                if v.Name == "ProjectileHandler" then
+                    local l__ProjectileHandler__44 = v
+                    v.Projectile.Value = v43
+                    v.Parent = l__Character__4
+                    if v43.Name == "ability2b" then
+                        v.Disabled = true
+                    end
+                end
+            end
             if v43.Name == "ability2b" then
                 chosen = v43
             end
@@ -132,7 +258,7 @@ module.CreateProjectile = function()
                         repeat
                             oldcf = v43.CFrame
                             task.wait()
-                        until v43.Parent == nil
+                        until v43.Parent == nil or t ~= v43.Transparency
                         tobe(oldcf)
                     end
                 end
@@ -142,13 +268,117 @@ module.CreateProjectile = function()
 end
 
 module.EffectApply = function(effect, togo)
-    if togo.Name ~= 'Head' or plrs:GetPlayerFromCharacter(togo.Parent) then 
-        return 
+    local c = plrs:GetPlayerFromCharacter(togo.Parent)
+    if togo.Name ~= 'Head' or not c then 
+        return
     end 
     
-    if effect:IsA('BillboardGui') and effect:FIndFirstAncestor(game.ReplicatedStorage.Classes) then 
+    if effect:IsA('BillboardGui') and effect.Parent.Parent.Parent == game.ReplicatedStorage.Classes then 
         ok(effect, togo, togo.Parent)
     end
+end
+
+module.Hologram = function()
+    local yescreateproj = module.CreateProjectile
+    yescreateproj(game.ReplicatedStorage.Classes.DANCER.Projectile.head, char.Head.CFrame)
+    yescreateproj(game.ReplicatedStorage.Classes.DANCER.Projectile.limb, char['Right Arm'].CFrame)
+    yescreateproj(game.ReplicatedStorage.Classes.DANCER.Projectile.limb, char['Left Arm'].CFrame)
+    yescreateproj(game.ReplicatedStorage.Classes.DANCER.Projectile.limb, char['Right Leg'].CFrame)
+    yescreateproj(game.ReplicatedStorage.Classes.DANCER.Projectile.limb, char['Left Leg'].CFrame)
+    yescreateproj(game.ReplicatedStorage.Classes.DANCER.Projectile.torso, char['Torso'].CFrame)
+end
+
+module.Dash = function(poww, mode)
+    spawn(
+        function()
+            local l__Character__4 = game.Players.LocalPlayer.Character
+            local v40 = Instance.new("BodyVelocity")
+            v40.MaxForce = Vector3.new(99999999, 0, 99999999)
+            if mode == 'Foward' then
+                v40.Velocity = l__Character__4.HumanoidRootPart.CFrame.lookVector * Vector3.new(poww, 0, poww)
+            elseif mode == 'MovementDirection' then
+                v40.Velocity = l__Character__4.Humanoid.MoveDirection * Vector3.new(poww, 0, poww)
+            end
+            if l__Character__4.Humanoid.MoveDirection.magnitude == 0 then
+                v40.Velocity = l__Character__4.HumanoidRootPart.CFrame.lookVector * Vector3.new(poww, 0, poww)
+            end
+            v40.Parent = l__Character__4.HumanoidRootPart
+            task.wait(0.2)
+            v40:Destroy()
+        end
+    )
+end
+
+module.CustomSkin = function(armorpieces)
+    local class = game.ReplicatedStorage.Classes[plr.Character.CurrentClass.Value]
+    local function adjustskin()
+        for i, v in pairs(armorpieces) do
+            if type(v) == "string" then
+                ok(game.ReplicatedStorage.Classes[string.upper(v)].MainSkin[i], location)
+            else
+                ok(v, location)
+            end
+        end
+        
+        for _, v in pairs(class.MainSkin:GetChildren()) do
+            if not location:FindFirstChild(v.Name) then
+                ok(v, location)
+            end
+        end
+        
+    end
+
+    if not class:FindFirstChild("Part") then
+        ok(game.ReplicatedStorage.Part, class)
+        local n = class:WaitForChild("Part")
+        adjustskin(n)
+        task.wait(3)
+    end
+
+    chooseskin("Part")
+
+    task.wait(1)
+end
+
+module.UsingAttack = {}
+module.UsingAbility1 = {}
+module.UsingAbility2 = {}
+module.UsingCritical = {}
+
+function module.UsingAttack:Connect(func)
+    if canatk and char.Stats.Disable.Value == 0 then 
+        return cooling(module.CoolDowns.ATK, 'atk')
+    end 
+    
+    
+    func()
+end
+
+function module.UsingAbility1:Connect(func)
+    if canab1 and char.Stats.Disable.Value == 0 then 
+        return cooling(module.CoolDowns.AB1, 'ab1')
+    end 
+    
+    
+    func()
+end
+
+function module.UsingAbility2:Connect(func)
+    if canab2 and char.Stats.Disable.Value == 0 then 
+        return cooling(module.CoolDowns.AB2, 'ab2')
+    end 
+    
+    
+    func()
+end
+
+function module.UsingCritical:Connect(func)
+    if cancrit and char.Stats.Disable.Value == 0 then 
+        return cooling(module.CoolDowns.CRIT, 'crit')
+    end 
+    
+    
+    func()
 end
 
 
