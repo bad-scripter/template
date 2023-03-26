@@ -57,7 +57,7 @@ end
 
 
 
-local function cooling(move, timer)
+local function cooling(timer, move)
     spawn(function()
         local gui = game.Players.LocalPlayer.PlayerGui.ClassGui.MainHUD.Abilites
         
@@ -374,7 +374,7 @@ end
 
 function module.UsingCritical:Connect(func, cd)
     if cancrit and char.Stats.Disable.Value == 0 then 
-        return cooling(cdc, 'crit')
+        return cooling(cd, 'crit')
     end 
     
     
