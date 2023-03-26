@@ -469,7 +469,7 @@ module.Hitbox = function(size, cf, onhit, length, deb)
     hitbox(size, cf, onhit, length, deb)
 end
 
-module.MeleeCreateProjectile = function(projpath, cf, mag, dam, onhit)
+module.MeleeCreateProjectile = function(projpath, cf, mag, onhit)
     local l__Remotes__13 = game.ReplicatedStorage.Remotes
     local l__LocalPlayer__2 = game.Players.LocalPlayer
     local l__Character__4 = l__LocalPlayer__2.Character
@@ -512,6 +512,7 @@ function module.UsingAttack:Connect(func, cd)
     else 
         return 
     end 
+    
 
     func()
 end
