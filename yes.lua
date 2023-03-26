@@ -510,10 +510,11 @@ function module.UsingAttack:Connect(func, cd)
     if canatk and plr.Character.Stats.Disable.Value == 0 then 
         cooling(cd, 'atk')
     else 
+        print'???'
         return 
     end 
-    cooling(cd, "atk")
 
+    print('yay ran')
     func()
 end
 
