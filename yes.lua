@@ -4,6 +4,10 @@ local plrs = game:GetService("Players")
 local plr = plrs.LocalPlayer
 local char = plr.Character
 
+if char.CurrentClass.Value == 'none' then 
+    return error'no class'
+end 
+
 plr.PlayerGui.ClassGui.Main.Disabled = true
 
 for _, v in pairs(plr.PlayerGui.ClassGui.MainHUD.Abilites:GetChildren()) do
