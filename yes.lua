@@ -388,5 +388,13 @@ function module.UsingCritical:Connect(func, cd)
     func()
 end
 
+if char:FindFirstChild'run' then 
+    return error'nah'
+end
+
+local c = Instance.new('BoolValue', char)
+c.Name = 'run'
+
+
 
 return module
