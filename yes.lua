@@ -345,42 +345,41 @@ module.UsingAbility1 = {}
 module.UsingAbility2 = {}
 module.UsingCritical = {}
 
-function module.UsingAttack:Connect(func)
+function module.UsingAttack:Connect(func, cd)
     if canatk and char.Stats.Disable.Value == 0 then 
-        return cooling(module.CoolDowns.ATK, 'atk')
+        return cooling(cd, 'atk')
     end 
     
     
     func()
 end
 
-function module.UsingAbility1:Connect(func)
+function module.UsingAbility1:Connect(func, cd)
     if canab1 and char.Stats.Disable.Value == 0 then 
-        return cooling(module.CoolDowns.AB1, 'ab1')
+        return cooling(cd, 'ab1')
     end 
     
     
     func()
 end
 
-function module.UsingAbility2:Connect(func)
+function module.UsingAbility2:Connect(func, cd)
     if canab2 and char.Stats.Disable.Value == 0 then 
-        return cooling(module.CoolDowns.AB2, 'ab2')
+        return cooling(cd, 'ab2')
     end 
     
     
     func()
 end
 
-function module.UsingCritical:Connect(func)
+function module.UsingCritical:Connect(func, cd)
     if cancrit and char.Stats.Disable.Value == 0 then 
-        return cooling(module.CoolDowns.CRIT, 'crit')
+        return cooling(cdc, 'crit')
     end 
     
     
     func()
 end
-
 
 
 return module
