@@ -507,7 +507,7 @@ module.UsingAbility2 = {}
 module.UsingCritical = {}
 
 function module.UsingAttack:Connect(func, cd)
-    if not canatk or char.Stats.Disable.Value == 0 then
+    if not canatk or not char.Stats.Disable.Value == 0 then
         return 
     end
     cooling(cd, "atk")
@@ -516,7 +516,7 @@ function module.UsingAttack:Connect(func, cd)
 end
 
 function module.UsingAbility1:Connect(func, cd)
-    if not canab1 or char.Stats.Disable.Value == 0 then
+    if not canab1 or not char.Stats.Disable.Value == 0 then
         return 
     end
     cooling(cd, "ab1")
@@ -525,7 +525,7 @@ function module.UsingAbility1:Connect(func, cd)
 end
 
 function module.UsingAbility2:Connect(func, cd)
-    if not canab2 or char.Stats.Disable.Value == 0 then
+    if not canab2 or not char.Stats.Disable.Value == 0 then
         return 
     end
     cooling(cd, "ab2")
@@ -534,7 +534,7 @@ function module.UsingAbility2:Connect(func, cd)
 end
 
 function module.UsingCritical:Connect(func, cd)
-    if not cancrit or char.Stats.Disable.Value == 0 then
+    if not cancrit or not char.Stats.Disable.Value == 0 then
         return 
     end
     cooling(cd, "crit")
