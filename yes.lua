@@ -4,6 +4,13 @@ local plrs = game:GetService("Players")
 local plr = plrs.LocalPlayer
 local char = plr.Character
 
+plr.PlayerGui.ClassGui.Main.Disabled = true 
+
+for _, v in pairs(plr.PlayerGui.ClassGui.MainHUD.Abilites:GetChildren()) do 
+    v.CooldownDisplay.Text = ''
+    v.Icon.ImageTransparency = 1
+end 
+
 if game.Players.LocalPlayer:FindFirstChild("remotesFired") == nil then
 	local v7 = Instance.new("IntValue", game.Players.LocalPlayer);
 	v7.Value = 0;
