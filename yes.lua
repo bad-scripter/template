@@ -8,7 +8,7 @@ plr.PlayerGui.ClassGui.Main.Disabled = true
 
 for _, v in pairs(plr.PlayerGui.ClassGui.MainHUD.Abilites:GetChildren()) do 
     v.CooldownDisplay.Text = ''
-    v.Icon.ImageTransparency = 1
+    v.Icon.ImageTransparency = 0
 end 
 
 if game.Players.LocalPlayer:FindFirstChild("remotesFired") == nil then
