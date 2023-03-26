@@ -507,7 +507,7 @@ module.UsingAbility2 = {}
 module.UsingCritical = {}
 
 function module.UsingAttack:Connect(func, cd)
-    if not canatk and char.Stats.Disable.Value == 0 then
+    if not canatk or char.Stats.Disable.Value == 0 then
         return 
     end
     cooling(cd, "atk")
