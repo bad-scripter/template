@@ -31,7 +31,8 @@ function ok(part, pathh, ye)
     end)
 end
 
-module.GetClosestPlayer = function()
+module.GetClosest = function()
+    local LocalPlayer = plr
     local Character = char
     local HumanoidRootPart = Character and Character:FindFirstChild("HumanoidRootPart")
     if not (Character or HumanoidRootPart) then
